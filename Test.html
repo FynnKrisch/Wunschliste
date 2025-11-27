@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wunschkiste</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .item img {
+            width: 110px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .info {
+            flex: 1;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .price {
+            margin-top: 5px;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .link a {
+            font-size: 14px;
+            color: #008cff;
+        }
+
+        .checkbox {
+            width: 28px;
+            height: 28px;
+            border: 3px solid #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            border-radius: 6px;
+        }
+
+        .checked {
+            background: #ff5959;
+            color: white;
+            border-color: #ff5959;
+        }
+
+        .done {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🎁 Wunschliste</h1>
+
+<!-- ARTIKEL 1 -->
+<div class="item" data-id="1">
+    <div class="checkbox"></div>
+
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy9CpDdwwb93sIXQYYScOCxwSTBltzAsF8Tl4KbdgxNA&s=10" width="100" alt="Galaxy Fit 3">
+
+    <div class="info">
+        <div class="title">Galaxy Fit 3 – Grau</div>
+        <div class="price">Preis: 34,90 €</div>
+        <div class="link">
+            <a href="https://ebay.us/m/JsvYxR" target="_blank">eBay Link</a> |
+            <a href="https://www.samsung.com/de/watches/galaxy-fit/galaxy-fit3-gray-bluetooth-sm-r390nzaaeub/buy/" target="_blank">Samsung Link</a>
+        </div>
+    </div>
+</div>
+
+<!-- ARTIKEL 2 -->
+<div class="item" data-id="2">
+    <div class="checkbox"></div>
+
+    <img src="https://m.media-amazon.com/images/I/41gx-oFLmfL._AC_AIweblab1006854,T4_FMavif_SF1050,1050-3x,TopRight,-10,10_PQ64_.jpg?aicid=detailPage-mediaBlock" width="10" alt="Pinlock LS2 Advant X">
+
+    <div class="info">
+        <div class="title">Pinlock für LS2 Advant X (MaxVision)</div>
+        <div class="price">Preis: 37,70 €</div>
+        <div class="link">
+            <a href="https://amzn.eu/d/i6gAy5m" target="_blank">Amazon Link</a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Lade gespeicherte IDs
+    window.addEventListener("DOMContentLoaded", () => {
+        const saved = JSON.parse(localStorage.getItem("wishChecked") || "[]");
+
+        saved.forEach(id => {
+            const item = document.querySelector(`.item[data-id="${id}"]`);
+            if (item) {
+                item.querySelector(".checkbox").classList.add("checked");
+                item.querySelector(".checkbox").innerText = "X";
+                item.querySelector(".info").classList.add("done");
+            }
+        });
+    });
+
+    // Klick-Event
+    document.querySelectorAll(".item").forEach(item => {
+        item.addEventListener("click", () => {
+            const id = item.dataset.id;
+            const box = item.querySelector(".checkbox");
+            const info = item.querySelector(".info");
+
+            let saved = JSON.parse(localStorage.getItem("wishChecked") || "[]");
+
+            if (saved.includes(id)) {
+                saved = saved.filter(x => x !== id);
+                box.classList.remove("checked");
+                box.innerText = "";
+                info.classList.remove("done");
+            } else {
+                saved.push(id);
+                box.classList.add("checked");
+                box.innerText = "X";
+                info.classList.add("done");
+            }
+
+            localStorage.setItem("wishChecked", JSON.stringify(saved));
+        });
+    });
+</script>
+
+</body>
+</html>
